@@ -4,17 +4,19 @@
  */
 package GUI;
 
-/**
- *
- * @author Daniel
- */
+import java.awt.Color;
+
 public class InterfazInicio extends javax.swing.JFrame {
 
     /**
      * Creates new form InterfazInicio
      */
     public InterfazInicio() {
+        setUndecorated(true);
         initComponents();
+        
+        setResizable(false);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -26,21 +28,138 @@ public class InterfazInicio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        Salir = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        CargarNuevaClave = new javax.swing.JButton();
+        MostrarArbol = new javax.swing.JButton();
+        Determinar = new javax.swing.JButton();
+        Buscar = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(102, 255, 102));
+
+        Salir.setBackground(new java.awt.Color(204, 204, 204));
+        Salir.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        Salir.setText("X");
+        Salir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                SalirMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                SalirMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                SalirMouseExited(evt);
+            }
+        });
+        Salir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SalirActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Arial Black", 1, 36)); // NOI18N
+        jLabel1.setText("Clave Dicotómica");
+
+        CargarNuevaClave.setBackground(new java.awt.Color(255, 255, 102));
+        CargarNuevaClave.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
+        CargarNuevaClave.setText("Cargar una nueva clave");
+
+        MostrarArbol.setBackground(new java.awt.Color(255, 255, 102));
+        MostrarArbol.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
+        MostrarArbol.setText("Mostrar como árbol");
+        MostrarArbol.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MostrarArbolActionPerformed(evt);
+            }
+        });
+
+        Determinar.setBackground(new java.awt.Color(255, 255, 102));
+        Determinar.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
+        Determinar.setText("Determinar especie");
+
+        Buscar.setBackground(new java.awt.Color(255, 255, 102));
+        Buscar.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
+        Buscar.setText("Buscar especie");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 64, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(Salir, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(126, 126, 126)
+                        .addComponent(CargarNuevaClave))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(138, 138, 138)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Determinar)
+                            .addComponent(MostrarArbol)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(151, 151, 151)
+                        .addComponent(Buscar)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(Salir)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(CargarNuevaClave)
+                .addGap(35, 35, 35)
+                .addComponent(MostrarArbol)
+                .addGap(38, 38, 38)
+                .addComponent(Determinar)
+                .addGap(34, 34, 34)
+                .addComponent(Buscar)
+                .addContainerGap(38, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void SalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SalirMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_SalirMouseClicked
+
+    private void SalirMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SalirMouseEntered
+        Salir.setForeground(Color.red);
+    }//GEN-LAST:event_SalirMouseEntered
+
+    private void SalirMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SalirMouseExited
+        Salir.setForeground(Color.black);
+    }//GEN-LAST:event_SalirMouseExited
+
+    private void SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_SalirActionPerformed
+
+    private void MostrarArbolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MostrarArbolActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_MostrarArbolActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +197,12 @@ public class InterfazInicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Buscar;
+    private javax.swing.JButton CargarNuevaClave;
+    private javax.swing.JButton Determinar;
+    private javax.swing.JButton MostrarArbol;
+    private javax.swing.JButton Salir;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

@@ -8,6 +8,6 @@ package EDD;
  *
  * @author Daniel
  */
-public class Tree {
+public class BinaryTree {
     
 }

@@ -5,6 +5,7 @@
 package GUI;
 
 import java.awt.Color;
+import GUI.Buscar;
 
 public class InterfazInicio extends javax.swing.JFrame {
 
@@ -38,7 +39,7 @@ public class InterfazInicio extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(102, 255, 102));
+        jPanel1.setBackground(new java.awt.Color(153, 255, 153));
 
         Salir.setBackground(new java.awt.Color(204, 204, 204));
         Salir.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
@@ -63,12 +64,14 @@ public class InterfazInicio extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 36)); // NOI18N
         jLabel1.setText("Clave Dicotómica");
 
-        CargarNuevaClave.setBackground(new java.awt.Color(255, 255, 102));
+        CargarNuevaClave.setBackground(new java.awt.Color(0, 0, 0));
         CargarNuevaClave.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
+        CargarNuevaClave.setForeground(new java.awt.Color(255, 255, 255));
         CargarNuevaClave.setText("Cargar una nueva clave");
 
-        MostrarArbol.setBackground(new java.awt.Color(255, 255, 102));
+        MostrarArbol.setBackground(new java.awt.Color(0, 0, 0));
         MostrarArbol.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
+        MostrarArbol.setForeground(new java.awt.Color(255, 255, 255));
         MostrarArbol.setText("Mostrar como árbol");
         MostrarArbol.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -76,13 +79,20 @@ public class InterfazInicio extends javax.swing.JFrame {
             }
         });
 
-        Determinar.setBackground(new java.awt.Color(255, 255, 102));
+        Determinar.setBackground(new java.awt.Color(0, 0, 0));
         Determinar.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
+        Determinar.setForeground(new java.awt.Color(255, 255, 255));
         Determinar.setText("Determinar especie");
 
-        Buscar.setBackground(new java.awt.Color(255, 255, 102));
+        Buscar.setBackground(new java.awt.Color(0, 0, 0));
         Buscar.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
+        Buscar.setForeground(new java.awt.Color(255, 255, 255));
         Buscar.setText("Buscar especie");
+        Buscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BuscarMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -160,6 +170,12 @@ public class InterfazInicio extends javax.swing.JFrame {
     private void MostrarArbolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MostrarArbolActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_MostrarArbolActionPerformed
+
+    private void BuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BuscarMouseClicked
+        Buscar buscar = new Buscar();
+        buscar.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_BuscarMouseClicked
 
     /**
      * @param args the command line arguments

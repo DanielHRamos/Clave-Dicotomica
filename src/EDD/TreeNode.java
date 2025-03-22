@@ -10,12 +10,14 @@ package EDD;
  */
 public class TreeNode {
     private String question;
-    private SimpleNode<TreeNode> hijos;
+    private TreeNode hijoSi;
+    private TreeNode hijoNo;
     
     public TreeNode(String question){
         this.question = question;
-        this.hijos = null;
-    }
+        this.hijoSi = null;
+        this.hijoNo = null;
+    }   
 
     public String getQuestion() {
         return question;
@@ -25,22 +27,19 @@ public class TreeNode {
         this.question = question;
     }
 
-    public SimpleNode<TreeNode> getHijos() {
-        return hijos;
+    public TreeNode getHijoSi() {
+        return hijoSi;
     }
 
-    public void addHijo(TreeNode hijo){
-        SimpleNode<TreeNode> newNode = new SimpleNode<>(hijo);
-        if (hijos == null){
-            hijos = newNode;            
-        } else {
-            SimpleNode<TreeNode> actual = hijos;
-            while (actual.getpNext() != null){
-                actual = actual.getpNext();
-            }
-            actual.setpNext(newNode);
-        }        
+    public void setHijoSi(TreeNode hijoSi) {
+        this.hijoSi = hijoSi;
     }
-    
-    
+
+    public TreeNode getHijoNo() {
+        return hijoNo;
+    }
+
+    public void setHijoNo(TreeNode hijoNo) {
+        this.hijoNo = hijoNo;
+    }                
 }

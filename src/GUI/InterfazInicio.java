@@ -4,9 +4,20 @@
  */
 package GUI;
 
+import EDD.BinaryTree;
 import java.awt.Color;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class InterfazInicio extends javax.swing.JFrame {
+
+    private BinaryTree binaryTree;
 
     /**
      * Creates new form InterfazInicio
@@ -14,7 +25,7 @@ public class InterfazInicio extends javax.swing.JFrame {
     public InterfazInicio() {
         setUndecorated(true);
         initComponents();
-        
+        binaryTree = new BinaryTree();
         setResizable(false);
         setLocationRelativeTo(null);
     }
@@ -66,6 +77,11 @@ public class InterfazInicio extends javax.swing.JFrame {
         CargarNuevaClave.setBackground(new java.awt.Color(255, 255, 102));
         CargarNuevaClave.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
         CargarNuevaClave.setText("Cargar una nueva clave");
+        CargarNuevaClave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CargarNuevaClaveActionPerformed(evt);
+            }
+        });
 
         MostrarArbol.setBackground(new java.awt.Color(255, 255, 102));
         MostrarArbol.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
@@ -79,6 +95,11 @@ public class InterfazInicio extends javax.swing.JFrame {
         Determinar.setBackground(new java.awt.Color(255, 255, 102));
         Determinar.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
         Determinar.setText("Determinar especie");
+        Determinar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeterminarActionPerformed(evt);
+            }
+        });
 
         Buscar.setBackground(new java.awt.Color(255, 255, 102));
         Buscar.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
@@ -95,17 +116,19 @@ public class InterfazInicio extends javax.swing.JFrame {
                 .addComponent(Salir, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(178, 178, 178)
+                            .addComponent(Buscar)
+                            .addGap(15, 15, 15))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addGap(138, 138, 138)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(MostrarArbol)
+                                .addComponent(Determinar))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(126, 126, 126)
-                        .addComponent(CargarNuevaClave))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(138, 138, 138)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Determinar)
-                            .addComponent(MostrarArbol)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(151, 151, 151)
-                        .addComponent(Buscar)))
+                        .addGap(149, 149, 149)
+                        .addComponent(CargarNuevaClave)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -118,13 +141,13 @@ public class InterfazInicio extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(CargarNuevaClave)
-                .addGap(35, 35, 35)
+                .addGap(36, 36, 36)
                 .addComponent(MostrarArbol)
-                .addGap(38, 38, 38)
-                .addComponent(Determinar)
                 .addGap(34, 34, 34)
+                .addComponent(Determinar)
+                .addGap(36, 36, 36)
                 .addComponent(Buscar)
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -158,9 +181,39 @@ public class InterfazInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_SalirActionPerformed
 
     private void MostrarArbolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MostrarArbolActionPerformed
-        // TODO add your handling code here:
+        binaryTree.visualizeTree();
     }//GEN-LAST:event_MostrarArbolActionPerformed
 
+    private void CargarNuevaClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarNuevaClaveActionPerformed
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Seleccione la clave en formato JSON");
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivos JSON", "json"));
+
+        int seleccion = fileChooser.showOpenDialog(this);
+
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            File archivo = fileChooser.getSelectedFile();
+            String rutaArchivo = archivo.getAbsolutePath();
+
+            try {
+                
+                JSONParser parser = new JSONParser();
+                JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(rutaArchivo));
+
+                binaryTree.buildTreeFromJson(rutaArchivo);
+
+                JOptionPane.showMessageDialog(this, "Archivo cargado correctamente: " + archivo.getName());
+            } catch (IOException | ParseException e) {
+                JOptionPane.showMessageDialog(this, "Error al cargar el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_CargarNuevaClaveActionPerformed
+
+    private void DeterminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeterminarActionPerformed
+        
+    }//GEN-LAST:event_DeterminarActionPerformed
+    
     /**
      * @param args the command line arguments
      */

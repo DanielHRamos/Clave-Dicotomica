@@ -138,7 +138,7 @@ public class BinaryTree {
             node {
                 size: 20px;
                 text-size: 15;
-                fill-color: white;
+                fill-color: green;
                 stroke-mode: plain;
                 stroke-color: black;
             }
@@ -150,7 +150,8 @@ public class BinaryTree {
         System.setProperty("org.graphstream.ui", "swing");
        
         Viewer viewer = graph.display();
-        viewer.disableAutoLayout(); 
+        viewer.disableAutoLayout();
+        
     }
 
     private void addNodesToGraph(Graph graph, Node parentNode, TreeNode treeNode, double x, int level) {

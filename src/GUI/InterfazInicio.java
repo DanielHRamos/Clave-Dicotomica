@@ -18,7 +18,7 @@ import org.json.simple.parser.ParseException;
 public class InterfazInicio extends javax.swing.JFrame {
 
     private BinaryTree binaryTree;
-
+    private boolean jsonLoaded = false;
     /**
      * Creates new form InterfazInicio
      */
@@ -104,6 +104,11 @@ public class InterfazInicio extends javax.swing.JFrame {
         Buscar.setBackground(new java.awt.Color(255, 255, 102));
         Buscar.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
         Buscar.setText("Buscar especie");
+        Buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuscarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -181,7 +186,11 @@ public class InterfazInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_SalirActionPerformed
 
     private void MostrarArbolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MostrarArbolActionPerformed
-        binaryTree.visualizeTree();
+        if (jsonLoaded) {
+            binaryTree.visualizeTree();
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, cargue un archivo JSON primero.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_MostrarArbolActionPerformed
 
     private void CargarNuevaClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarNuevaClaveActionPerformed
@@ -202,52 +211,31 @@ public class InterfazInicio extends javax.swing.JFrame {
                 JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(rutaArchivo));
 
                 binaryTree.buildTreeFromJson(rutaArchivo);
+                jsonLoaded = true;
 
                 JOptionPane.showMessageDialog(this, "Archivo cargado correctamente: " + archivo.getName());
             } catch (IOException | ParseException e) {
                 JOptionPane.showMessageDialog(this, "Error al cargar el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                jsonLoaded = false;
             }
         }
     }//GEN-LAST:event_CargarNuevaClaveActionPerformed
 
     private void DeterminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeterminarActionPerformed
-        
-    }//GEN-LAST:event_DeterminarActionPerformed
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(InterfazInicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(InterfazInicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(InterfazInicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(InterfazInicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        if (jsonLoaded) {
+            binaryTree.visualizeTree();
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, cargue un archivo JSON primero.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        //</editor-fold>
+    }//GEN-LAST:event_DeterminarActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new InterfazInicio().setVisible(true);
-            }
-        });
-    }
+    private void BuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarActionPerformed
+        Buscar busqueda = new Buscar();
+        busqueda.setLocationRelativeTo(null);
+        busqueda.setVisible(true);
+        
+    }//GEN-LAST:event_BuscarActionPerformed
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Buscar;

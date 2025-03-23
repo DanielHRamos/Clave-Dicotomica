@@ -4,20 +4,22 @@
  */
 package GUI;
 
+import EDD.BinaryTree;
 import java.awt.Color;
+import javax.swing.JOptionPane;
 
 public class Buscar extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Buscar
-     */
-    public Buscar() {
+    private BinaryTree binaryTree;
+
+    public Buscar(BinaryTree binaryTree) {
+        this.binaryTree = binaryTree;
         setUndecorated(true);
         initComponents();
-        
         setResizable(false);
         setLocationRelativeTo(null);
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -45,6 +47,11 @@ public class Buscar extends javax.swing.JFrame {
         BuscarPorHash.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
         BuscarPorHash.setForeground(new java.awt.Color(255, 255, 255));
         BuscarPorHash.setText("Por Hash");
+        BuscarPorHash.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuscarPorHashActionPerformed(evt);
+            }
+        });
 
         BuscarPorArbol.setBackground(new java.awt.Color(0, 0, 0));
         BuscarPorArbol.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
@@ -125,7 +132,20 @@ public class Buscar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BuscarPorArbolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarPorArbolActionPerformed
-        // TODO add your handling code here:
+                                         
+    if (binaryTree == null || binaryTree.getRoot() == null) {
+        JOptionPane.showMessageDialog(this, "Primero debe cargar una clave dicotómica.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    String especie = JOptionPane.showInputDialog(this, "Ingrese el nombre de la especie a buscar:");
+
+    if (especie != null && !especie.trim().isEmpty()) {
+        String resultadoArbol = binaryTree.buscarEspecieEnArbol(especie);
+        JOptionPane.showMessageDialog(this, resultadoArbol, "Resultado de Búsqueda (Árbol)", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+
     }//GEN-LAST:event_BuscarPorArbolActionPerformed
 
     private void SalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SalirMouseClicked
@@ -143,6 +163,10 @@ public class Buscar extends javax.swing.JFrame {
     private void SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirActionPerformed
         System.exit(0);
     }//GEN-LAST:event_SalirActionPerformed
+
+    private void BuscarPorHashActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarPorHashActionPerformed
+       
+    }//GEN-LAST:event_BuscarPorHashActionPerformed
 
     /**
      * @param args the command line arguments
@@ -171,13 +195,15 @@ public class Buscar extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Buscar().setVisible(true);
+                BinaryTree miArbol = new BinaryTree(); // Se crea una instancia válida
+                new Buscar(miArbol).setVisible(true);
             }
         });
     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BuscarPorArbol;

@@ -225,12 +225,12 @@ public class InterfazInicio extends javax.swing.JFrame {
         if (jsonLoaded) {
             binaryTree.visualizeTree();
         } else {
-            JOptionPane.showMessageDialog(this, "Por favor, cargue un archivo JSON primero.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Cargue un archivo JSON primero", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_DeterminarActionPerformed
 
     private void BuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarActionPerformed
-        Buscar busqueda = new Buscar();
+        Buscar busqueda = new Buscar(this.binaryTree);
         busqueda.setLocationRelativeTo(null);
         busqueda.setVisible(true);
         

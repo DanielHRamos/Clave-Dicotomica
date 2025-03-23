@@ -23,13 +23,17 @@ public class BinaryTree {
 
     private TreeNode root;
     private int nodeIdCounter; 
+    
+    private HashTable<String> speciesHashTable; 
 
     public BinaryTree() {
         this.root = null;
         this.nodeIdCounter = 0; 
+        this.speciesHashTable = new HashTable<>();
     }
 
     
+
     public void buildTreeFromJson(String filePath) {
         JSONParser parser = new JSONParser();
 
@@ -39,93 +43,66 @@ public class BinaryTree {
             JSONArray speciesArray = (JSONArray) jsonObject.get(rootKey);
 
             if (speciesArray == null || speciesArray.isEmpty()) {
-                throw new IllegalArgumentException("El JSON no contiene especies.");
+                throw new IllegalArgumentException("El JSON no contien especies");
             }
 
-            
-            String rootQuestion = null;
-            for (Object obj : speciesArray) {
-                JSONObject species = (JSONObject) obj;
-                String speciesName = (String) species.keySet().iterator().next();
-                JSONArray questions = (JSONArray) species.get(speciesName);
-
-                if (questions == null || questions.isEmpty()) {
-                    throw new IllegalArgumentException("La especie '" + speciesName + "' no tiene preguntas.");
-                }
-
-                JSONObject firstQuestion = (JSONObject) questions.get(0);
-                String currentQuestion = (String) firstQuestion.keySet().iterator().next();
-
-                if (rootQuestion == null) {
-                    rootQuestion = currentQuestion; 
-                } else if (!rootQuestion.equals(currentQuestion)) {
-                    throw new IllegalArgumentException(
-                            "Error: La primera pregunta no coincide.\n"
-                            + "Esperado: '" + rootQuestion + "'\n"
-                            + "Encontrado: '" + currentQuestion + "' en la especie '" + speciesName + "'"
-                    );
-                }
-            }
+           
+            JSONObject firstSpecies = (JSONObject) speciesArray.get(0);
+            String speciesName = (String) firstSpecies.keySet().iterator().next();
+            JSONArray questions = (JSONArray) firstSpecies.get(speciesName);
+            JSONObject firstQuestion = (JSONObject) questions.get(0);
+            String firstQuestionText = (String) firstQuestion.keySet().iterator().next();
 
             
-            this.root = new TreeNode(rootQuestion);
+            this.root = new TreeNode(firstQuestionText);
 
             
             for (Object obj : speciesArray) {
                 JSONObject species = (JSONObject) obj;
-                buildSubTree(this.root, species);
+                buildSubTree(this.root, species, "Inicio: " + firstQuestionText);
             }
+
+            
+            construirHashDesdeArbol();
 
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
     }
 
-    private void buildSubTree(TreeNode root, JSONObject species) {
-        String speciesName = (String) species.keySet().iterator().next();
-        JSONArray questions = (JSONArray) species.get(speciesName);
-        TreeNode currentNode = root;
+    private void buildSubTree(TreeNode root, JSONObject species, String path) {
+    String speciesName = (String) species.keySet().iterator().next();
+    JSONArray questions = (JSONArray) species.get(speciesName);
+    TreeNode currentNode = root;
+    String currentPath = path;
+
+    for (int i = 1; i < questions.size(); i++) {
+        JSONObject questionObj = (JSONObject) questions.get(i);
+        String questionText = (String) questionObj.keySet().iterator().next();
+        boolean answer = (boolean) questionObj.get(questionText);
 
         
-        for (int i = 1; i < questions.size(); i++) {
-            JSONObject questionObj = (JSONObject) questions.get(i);
-            String questionText = (String) questionObj.keySet().iterator().next();
-            boolean answer = (boolean) questionObj.get(questionText);
+        currentPath += " → " + (answer ? "Sí: " : "No: ") + questionText;
 
-            
-            if (currentNode != this.root && currentNode.getHijoSi() == null && currentNode.getHijoNo() == null) {
-                TreeNode oldNode = new TreeNode(currentNode.getQuestion());
-                currentNode.setQuestion(questionText);
-                currentNode.setHijoSi(oldNode);
-            }
-
-            
-            TreeNode nextNode = answer ? currentNode.getHijoSi() : currentNode.getHijoNo();
-            if (nextNode == null) {
-                nextNode = new TreeNode(questionText);
-                if (answer) {
-                    currentNode.setHijoSi(nextNode);
-                } else {
-                    currentNode.setHijoNo(nextNode);
-                }
-            }
-            currentNode = nextNode;
-        }
-
-        
-        if (currentNode.getHijoSi() == null && currentNode.getHijoNo() == null) {
-            currentNode.setQuestion(speciesName);
-        } else {
-            TreeNode leaf = new TreeNode(speciesName);
+        if (answer) {
             if (currentNode.getHijoSi() == null) {
-                currentNode.setHijoSi(leaf);
-            } else {
-                currentNode.setHijoNo(leaf);
+                currentNode.setHijoSi(new TreeNode(questionText));
             }
+            currentNode = currentNode.getHijoSi();
+        } else {
+            if (currentNode.getHijoNo() == null) {
+                currentNode.setHijoNo(new TreeNode(questionText));
+            }
+            currentNode = currentNode.getHijoNo();
         }
     }
 
     
+    currentNode.setQuestion(speciesName);
+
+    
+    speciesHashTable.Insert(speciesName, "Ruta a la especie " + speciesName + ": " + currentPath);
+} 
     public void visualizeTree() {
         
         Graph graph = new SingleGraph("Árbol Binario");
@@ -185,7 +162,33 @@ public class BinaryTree {
         
         addNodesToGraph(graph, node, treeNode.getHijoNo(), x - 1, level + 1);
     }
+    public String buscarEspecieEnArbol(String nombre) {
+    return buscarRecursivo(root, nombre, "Inicio: " + root.getQuestion());
+    }
 
+    private String buscarRecursivo(TreeNode node, String nombre, String path) {
+        if (node == null) return "Especie no encontrada en la lista ";
+
+        
+        if (node.getHijoSi() == null && node.getHijoNo() == null) {
+            if (node.getQuestion().equalsIgnoreCase(nombre)) {
+                return "Ruta a la especie " + nombre + ": " + path;
+            }
+            return "Especie no enconrada";
+        }
+        if (node.getHijoSi() != null) {
+            String leftSearch = buscarRecursivo(node.getHijoSi(), nombre, path + " → Sí: " + node.getHijoSi().getQuestion());
+            if (!leftSearch.contains("Especie no encontrada")) return leftSearch;
+        }
+
+        
+        if (node.getHijoNo() != null) {
+            return buscarRecursivo(node.getHijoNo(), nombre, path + " → No: " + node.getHijoNo().getQuestion());
+        }
+
+        return "Especie no encontrada";
+    }
+    
     public void printTree(TreeNode node, String prefix) {
         if (node == null) {
             return; 
@@ -216,6 +219,26 @@ public class BinaryTree {
     */
     public TreeNode getRoot() {
         return root;
+    }
+    
+    public void construirHashDesdeArbol() {
+        if (root != null) {
+            agregarEspecieAlHash(root, "Inicio: " + root.getQuestion());
+        }
+    }
+    private void agregarEspecieAlHash(TreeNode node, String path) {
+        if (node.isLeaf()) {
+            speciesHashTable.Insert(node.getQuestion(), "Ruta a la especie " + node.getQuestion() + ": " + path);
+        } else {
+            if (node.getHijoSi() != null) 
+                agregarEspecieAlHash(node.getHijoSi(), path + " → Sí: " + node.getQuestion());
+            if (node.getHijoNo() != null) 
+                agregarEspecieAlHash(node.getHijoNo(), path + " → No: " + node.getQuestion());
+        }
+    }
+    public String buscarEspecieEnHash(String nombre) {
+        String resultado = speciesHashTable.Search(nombre);
+        return (resultado != null) ? resultado : "Especie no encontrada.";
     }
 
 }

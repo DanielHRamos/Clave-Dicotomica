@@ -249,7 +249,7 @@ public class InterfazInicio extends javax.swing.JFrame {
         }
     }
 
-    // Si por alguna razón se sale del bucle sin encontrar una especie
+ 
     JOptionPane.showMessageDialog(this, "No se encontró una especie en el árbol.", "Error", JOptionPane.ERROR_MESSAGE);
 
 

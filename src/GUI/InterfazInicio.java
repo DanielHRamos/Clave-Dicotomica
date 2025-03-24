@@ -5,6 +5,8 @@
 package GUI;
 
 import EDD.BinaryTree;
+import EDD.TreeNode;
+import GUI.Buscar;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileReader;
@@ -222,11 +224,35 @@ public class InterfazInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_CargarNuevaClaveActionPerformed
 
     private void DeterminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeterminarActionPerformed
-        if (jsonLoaded) {
-            binaryTree.visualizeTree();
-        } else {
-            JOptionPane.showMessageDialog(this, "Cargue un archivo JSON primero", "Error", JOptionPane.ERROR_MESSAGE);
+   if (binaryTree.getRoot() == null) {
+        JOptionPane.showMessageDialog(this, "Debe cargar una clave antes de determinar una especie.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    TreeNode currentNode = binaryTree.getRoot();
+
+    while (currentNode != null) {
+        
+        if (currentNode.getHijoSi() == null && currentNode.getHijoNo() == null) {
+            JOptionPane.showMessageDialog(this, "La especie encontrada es: " + currentNode.getQuestion(), "Resultado", JOptionPane.INFORMATION_MESSAGE);
+            return;
         }
+
+      
+        int respuesta = JOptionPane.showConfirmDialog(this, currentNode.getQuestion(), "Pregunta", JOptionPane.YES_NO_OPTION);
+
+       
+        if (respuesta == JOptionPane.YES_OPTION) {
+            currentNode = currentNode.getHijoSi();
+        } else {
+            currentNode = currentNode.getHijoNo();
+        }
+    }
+
+    // Si por alguna razón se sale del bucle sin encontrar una especie
+    JOptionPane.showMessageDialog(this, "No se encontró una especie en el árbol.", "Error", JOptionPane.ERROR_MESSAGE);
+
+
     }//GEN-LAST:event_DeterminarActionPerformed
 
     private void BuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarActionPerformed
